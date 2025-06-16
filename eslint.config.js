@@ -31,7 +31,9 @@ export default [
       ...reactHooks.configs.recommended.rules,
       ...prettierConfig.rules,
       "no-unused-vars": ["error", { varsIgnorePattern: "^[A-Z_]" }],
+      eqeqeq: ["error", "always"],
       "react/react-in-jsx-scope": "off",
+      "no-console": "warn",
       "react-refresh/only-export-components": [
         "warn",
         { allowConstantExport: true },
