@@ -8,7 +8,19 @@
     "build": "vite build",
     "lint": "eslint src --ext .js,.jsx --fix",
     "prettier": "prettier . --write --ignore-path .gitignore",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "jest --coverage",
+    "prepare": "husky install"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.10",
@@ -19,10 +31,15 @@
     "zustand": "^5.0.5"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.27.2",
     "@eslint/js": "^9.25.0",
+    "@jest/globals": "^30.0.2",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
+    "babel-jest": "^30.0.2",
     "eslint": "^9.25.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.1",
@@ -31,6 +48,7 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
     "husky": "^8.0.0",
+    "jest": "^30.0.2",
     "tailwindcss": "^4.1.10",
     "vite": "^6.3.5"
   }
