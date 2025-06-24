@@ -4,7 +4,7 @@ export default function Register() {
       <div className="max-w-md w-full bg-white p-10 rounded-3xl shadow-2xl border border-gray-200">
         <div className="text-center mb-8">
           <h2 className="text-4xl font-extrabold text-gray-800">
-            Task Scheduler
+            Resource Scheduler
           </h2>
           <p className="text-sm text-gray-500 mt-1">Register</p>
         </div>
