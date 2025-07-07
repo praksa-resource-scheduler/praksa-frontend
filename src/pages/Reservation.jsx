@@ -1,15 +1,62 @@
+import { useState } from "react";
+import HandleChange from "../utils/handleChange";
+import toUTC from "../utils/toUTC";
+import validateReservationForm from "../utils/validateReservationForm";
+
 export default function Reservation() {
+  const [formData, setFormData] = useState({
+    user: "",
+    resource: "",
+    startTime: "",
+    endTime: "",
+    description: "",
+  });
+
+  function handleChangeNewReservation(event) {
+    HandleChange(event, formData, setFormData);
+  }
+
+  const isValidated = validateReservationForm(formData);
+
+  function parseData(formData) {
+    return {
+      user: formData.user,
+      resource: formData.resource,
+      startTime: toUTC(formData.startTime),
+      endTime: toUTC(formData.endTime),
+      description: formData.description,
+    };
+  }
+
+  async function HandleSubmit(event) {
+    event.preventDefault();
+    if (!isValidated.ok) {
+      alert(isValidated.msg);
+      return;
+    }
+
+    console.log(formData);
+    const data = parseData(formData);
+    console.log("Form data:", data);
+    alert("Res ok");
+  }
+
   return (
     <div className="min-h-screen bg-white-50 flex flex-col items-center p-8">
       <h2 className="text-3xl font-bold mb-8 text-gray-800">
         Nova Rezervacija
       </h2>
-      <form className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
+      <form
+        className="bg-white shadow-md rounded-lg p-6 w-full max-w-md"
+        onSubmit={HandleSubmit}
+      >
         <label className="block mb-4">
           <span className="text-gray-700 font-semibold">Profesor ili ID</span>
           <input
+            value={formData.user}
+            onChange={handleChangeNewReservation}
             type="text"
-            name="professor"
+            name="user"
             required
             placeholder="Ime profesora"
             className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
@@ -19,7 +66,9 @@ export default function Reservation() {
         <label className="block mb-4">
           <span className="text-gray-700 font-semibold">Soba</span>
           <select
-            name="room"
+            name="resource"
+            value={formData.resource}
+            onChange={handleChangeNewReservation}
             required
             className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
           >
@@ -27,27 +76,19 @@ export default function Reservation() {
               Odaberite sobu
             </option>
             <option value="Amfiteatar A">Amfiteatar 1</option>
-            <option value="Učionica 101">Učionica B1</option>
-            <option value="Učionica 102">Učionica B2</option>
+            <option value="Učionica B1">Učionica B1</option>
+            <option value="Učionica B2">Učionica B2</option>
           </select>
-        </label>
-
-        <label className="block mb-4">
-          <span className="text-gray-700 font-semibold">Datum</span>
-          <input
-            type="date"
-            name="date"
-            required
-            className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
-          />
         </label>
 
         <div className="flex space-x-4 mb-6">
           <label className="flex-1">
             <span className="text-gray-700 font-semibold">Početak</span>
             <input
-              type="time"
+              type="datetime-local"
               name="startTime"
+              value={formData.startTime}
+              onChange={handleChangeNewReservation}
               required
               className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
             />
@@ -56,7 +97,9 @@ export default function Reservation() {
           <label className="flex-1">
             <span className="text-gray-700 font-semibold">Kraj</span>
             <input
-              type="time"
+              type="datetime-local"
+              value={formData.endTime}
+              onChange={handleChangeNewReservation}
               name="endTime"
               required
               className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
@@ -71,6 +114,9 @@ export default function Reservation() {
             </span>
             <textarea
               required
+              name="description"
+              value={formData.description}
+              onChange={handleChangeNewReservation}
               placeholder="Unesite svrhu rezervacije"
               className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
             ></textarea>
