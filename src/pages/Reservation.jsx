@@ -30,7 +30,7 @@ export default function Reservation() {
     const data = parseData(formData);
 
     axios
-      .post("api/reservation-requests", data)
+      .post("https://localhost:7260/api/reservation-requests", data)
       .then((response) => {
         console.log("Response:", response.data);
         alert("Reservation created successfully");
@@ -89,9 +89,12 @@ export default function Reservation() {
             <option value="" disabled>
               Odaberite sobu
             </option>
-            <option value="Amfiteatar A">Amfiteatar 1</option>
-            <option value="Učionica B1">Učionica B1</option>
-            <option value="Učionica B2">Učionica B2</option>
+            <option value="00000000-0000-0000-0000-000000000101">
+              Amfiteatar 1
+            </option>
+            <option value="00000000-0000-0000-0000-000000000102">
+              Učionica B1
+            </option>
           </select>
         </label>
 
