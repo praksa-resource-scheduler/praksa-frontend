@@ -1,7 +1,8 @@
 import { useState } from "react";
 import HandleChange from "../utils/handleChange";
-import toUTC from "../utils/toUTC";
 import validateReservationForm from "../utils/validateReservationForm";
+import duration from "../utils/duration";
+import parseData from "../utils/parseReservationData";
 
 export default function Reservation() {
   const [formData, setFormData] = useState({
@@ -16,29 +17,32 @@ export default function Reservation() {
     HandleChange(event, formData, setFormData);
   }
 
-  const isValidated = validateReservationForm(formData);
-
-  function parseData(formData) {
-    return {
-      user: formData.user,
-      resource: formData.resource,
-      startTime: toUTC(formData.startTime),
-      endTime: toUTC(formData.endTime),
-      description: formData.description,
-    };
-  }
-
   async function HandleSubmit(event) {
     event.preventDefault();
+
+    const isValidated = validateReservationForm(formData);
     if (!isValidated.ok) {
       alert(isValidated.msg);
       return;
     }
 
-    console.log(formData);
     const data = parseData(formData);
-    console.log("Form data:", data);
+
     alert("Res ok");
+    if (!duration(data.startTime, data.endTime, 2)) {
+      alert("Warning: reservation is more than two hours");
+    } else {
+      alert("Reservation is within the allowed duration");
+    }
+
+    console.log("Parsed Data:", data);
+    setFormData({
+      user: "",
+      resource: "",
+      startTime: "",
+      endTime: "",
+      description: "",
+    });
   }
 
   return (
@@ -113,7 +117,6 @@ export default function Reservation() {
               Svrha rezervacije
             </span>
             <textarea
-              required
               name="description"
               value={formData.description}
               onChange={handleChangeNewReservation}
