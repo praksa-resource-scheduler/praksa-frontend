@@ -3,6 +3,7 @@ import HandleChange from "../utils/handleChange";
 import validateReservationForm from "../utils/validateReservationForm";
 import duration from "../utils/duration";
 import parseData from "../utils/parseReservationData";
+import axios from "axios";
 
 export default function Reservation() {
   const [formData, setFormData] = useState({
@@ -28,12 +29,21 @@ export default function Reservation() {
 
     const data = parseData(formData);
 
-    alert("Res ok");
-    if (!duration(data.startTime, data.endTime, 2)) {
-      alert("Warning: reservation is more than two hours");
-    } else {
-      alert("Reservation is within the allowed duration");
-    }
+    axios
+      .post("https://localhost:7260/api/reservation-requests", data)
+      .then((response) => {
+        console.log("Response:", response.data);
+        alert("Reservation created successfully");
+        if (!duration(data.startTime, data.endTime, 2)) {
+          alert("Warning: reservation is more than two hours");
+        } else {
+          alert("Reservation is within the allowed duration");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Failed to create reservation");
+      });
 
     console.log("Parsed Data:", data);
     setFormData({
@@ -79,9 +89,12 @@ export default function Reservation() {
             <option value="" disabled>
               Odaberite sobu
             </option>
-            <option value="Amfiteatar A">Amfiteatar 1</option>
-            <option value="Učionica B1">Učionica B1</option>
-            <option value="Učionica B2">Učionica B2</option>
+            <option value="00000000-0000-0000-0000-000000000101">
+              Amfiteatar 1
+            </option>
+            <option value="00000000-0000-0000-0000-000000000102">
+              Učionica B1
+            </option>
           </select>
         </label>
 
