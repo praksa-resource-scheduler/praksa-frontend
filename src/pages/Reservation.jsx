@@ -3,6 +3,7 @@ import HandleChange from "../utils/handleChange";
 import validateReservationForm from "../utils/validateReservationForm";
 import duration from "../utils/duration";
 import parseData from "../utils/parseReservationData";
+import axios from "axios";
 
 export default function Reservation() {
   const [formData, setFormData] = useState({
@@ -28,12 +29,21 @@ export default function Reservation() {
 
     const data = parseData(formData);
 
-    alert("Res ok");
-    if (!duration(data.startTime, data.endTime, 2)) {
-      alert("Warning: reservation is more than two hours");
-    } else {
-      alert("Reservation is within the allowed duration");
-    }
+    axios
+      .post("api/reservation-requests", data)
+      .then((response) => {
+        console.log("Response:", response.data);
+        alert("Reservation created successfully");
+        if (!duration(data.startTime, data.endTime, 2)) {
+          alert("Warning: reservation is more than two hours");
+        } else {
+          alert("Reservation is within the allowed duration");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Failed to create reservation");
+      });
 
     console.log("Parsed Data:", data);
     setFormData({
