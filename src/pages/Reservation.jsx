@@ -98,7 +98,7 @@ export default function Reservation() {
           </select>
         </label>
 
-        <div className="flex space-x-4 mb-6">
+        <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-6">
           <label className="flex-1">
             <span className="text-gray-700 font-semibold">Početak</span>
             <input
