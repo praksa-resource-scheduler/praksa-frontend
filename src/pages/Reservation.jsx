@@ -4,6 +4,7 @@ import validateReservationForm from "../utils/validateReservationForm";
 import duration from "../utils/duration";
 import parseData from "../utils/parseReservationData";
 import axios from "axios";
+import React from "react";
 
 export default function Reservation() {
   const [formData, setFormData] = useState({
