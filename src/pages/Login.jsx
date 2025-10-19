@@ -1,47 +1,72 @@
+import { useState } from "react";
+import { Navigate, Link } from "react-router-dom";
+import { useAuth } from "../contexts/authContext";
+import { doSignInWithEmailAndPassword } from "../firebase/auth";
+import AuthInput from "../components/AuthInput";
+import AuthButton from "../components/AuthButton";
+
 export default function Login() {
+  const { userLoggedIn } = useAuth();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isSigningIn, setIsSigningIn] = useState(false);
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (isSigningIn) return;
+
+    setIsSigningIn(true);
+
+    try {
+      await doSignInWithEmailAndPassword(email, password);
+    } catch {
+      setIsSigningIn(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center  px-4">
-      <div className="max-w-md w-full bg-white p-10 rounded-3xl shadow-2xl border border-gray-200">
-        <div className="text-center mb-8">
-          <h2 className="text-4xl font-extrabold text-gray-800">
-            Resource Scheduler
-          </h2>
-          <p className="text-sm text-gray-500 mt-1">Login</p>
-        </div>
+    <>
+      {userLoggedIn && <Navigate to={"/"} replace />}
 
-        <form className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <input
+      <div className="min-h-screen flex items-center justify-center  px-4">
+        <div className="max-w-md w-full bg-white p-10 rounded-3xl shadow-2xl border border-gray-200">
+          <div className="text-center mb-8">
+            <h2 className="text-4xl font-extrabold text-gray-800">
+              Resource Scheduler
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">Login</p>
+          </div>
+
+          <form onSubmit={onSubmit} className="space-y-6">
+            <AuthInput
+              label="E-mail"
               type="email"
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="name@gmail.com"
+              state={email}
+              setState={setEmail}
             />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
-            <input
+            <AuthInput
+              label="Password"
               type="password"
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="••••••••"
+              state={password}
+              setState={setPassword}
             />
-          </div>
 
-          <div className="text-center mt-2"></div>
+            <div className="text-center mt-2"></div>
 
-          <button
-            type="submit"
-            className="appearance-none w-full bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl transition duration-300"
-          >
-            Sign in
-          </button>
-        </form>
+            <AuthButton text={isSigningIn ? "Signing in..." : "Sign in"} />
+            <p className="text-center text-sm">
+              Don&apos;t have an account?
+              <Link to={"/register"} className="hover:underline font-bold">
+                {" "}
+                Register.
+              </Link>
+            </p>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
