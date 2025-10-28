@@ -61,7 +61,7 @@ export default function Login() {
               Don&apos;t have an account?
               <Link to={"/register"} className="hover:underline font-bold">
                 {" "}
-                Register.
+                Register now!
               </Link>
             </p>
           </form>
